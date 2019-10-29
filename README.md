@@ -4,7 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/gepardec/docker-template)
 ![Maintenance](https://img.shields.io/maintenance/yes/2019)
 <p align="right">
-<img alt="gepardec" width=100px src="https://github.com/Gepardec/docker-templatei/raw/master/.images/gepardec.png">
+<img alt="gepardec" width=100px src="https://github.com/Gepardec/docker-template/raw/master/.images/gepardec.png">
 </p>
 <br>
 <br>
