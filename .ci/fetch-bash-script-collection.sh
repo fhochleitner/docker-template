@@ -7,7 +7,7 @@ curl -fsSL https://github.com/ckaserer/${script_repo}/archive/master.zip > ${scr
 unzip ${script_repo}.zip -d ${script_repo}
 f=("${script_repo}"/*)
 mv "${script_repo}"/*/* "${script_repo}"
-rmdir "${f[@]}"
+rm -rf "${f[@]}"
 rm ${script_repo}.zip
 ls -alh ${script_repo}/*
 set +ex
