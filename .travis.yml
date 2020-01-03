@@ -17,26 +17,19 @@ notifications:
     on_success: change
     on_failure: always
 env:
-  jobs:
-  - REPO='hello-world' TAG='latest' ORGANIZATION='gepardec'
   global:
   - secure: T3nA4PTr+XXZPIlbZZn//EImCzHYmtSui6WJOZ11qjubISUpABukslGUf1SlkEJrgtwhjlaPtcYS1/bb+I8+iRebYlL1xB0rqcsoOdHopOuxdfIbnc/Y6c9hlSBZQe1gL/L6cmfPcSWROHetCY+pRfy6BXHfjH14KLAHCBocvInobhENvbY4ylDdbVPLF0j/VrX1rETElMHm9JmqWNyb3UJpcjBPi1dReDhUG7PItQkejGk5fS94i6qwkWmvWciJh02aswKcGD9dWfg1ujoh6k7leJOs/fYNthBeElJDiReTodvdyb4sP7jmv5UN4mnD65xCdDkhYkrzzgyuYcfNVCjFoIYK6pOpSAaPm45L71B5v9XpNTEbSsM2nH7nXbycd8QongZcAJ/mX/SNAbyzcoIh14ndfe+twmP29nP0Xt1bejUcGqqczcf2nSUakrnM4TcgPnJ98fNNgVVxxobrXgZGCFkLdsVRhHlOAhpITHrCCOa0zGUrv3xmG4PiAq6FEcVchkXQ2QWEYg7A4ygU49CpHTBx1mxbBcaAMcOnTjI3NT1Anra7EmhOdUy5kL/AyKe2v3u4lymJjhEf2duClCmp/SDuSUeldyEiD9oWMT/dzrZ6gud8skT1FCuzL/nWS88Ce//PmBR9ykFpVl8D7OjKsLUjaLJhHNX+o3qf9oc=
   - secure: cfcz5lHkbCKA2YUCJF+J2oUQaefmZjy9LvSaYUXxea9XPqgp1bV1XXeUfKaPXuEpYSCoMtWM2Bnszx/A3HHC9izRUy+wz0g8OWJ/+o4y7FsXf7E+HdNuj7LLM0m+BGImOHO9O9IgR5l6PgBk+Gn/PeA7X198PRG10OxgNi8jPRfNVkkhk80HfuDtQ2m3Nq8z+yojB0mBfJ318GF2hqENCHxXLzMi3mZXLekI0L7OWQWXGplvkXEdcjmpKAIjG9n1ZwgzSoWTdzb2F2a0AAA8O7wqdn6IJgpnfS7xFlMOBNrJgVFXgsT0xWVyfNRFPIeXR+3IA+MSMZp02LDiSudHHTTK6ChEuFOZ+alYTuOAcEBiihpXDv4Q7ZO/qIyomiC/EMU3i6cnnp9HzWm3LalrBEbRz/N9vA5TKv8DHwGGmla4vLlS+PqFbcSMIyJWgGdp8UFhISe+dYN7MNMSMECU/jkp+FN7LtmJtyJTUaxfPk41iOiA0oysdRmZD4eLAggqoey0H/2APBp02AiQhGeHNDs3yF+5kNt5oPVQ0AQoAyoUZOVlpXzH084u+OOcYqPbsApasUfIawDS2BgT177TGeztjnlnfIaS4T7MWmr4FKbZR9jm0rb6i2QO1TaFH3zWpWauZVQTTOHY2S40M7e/uG6N693CRA3vBBXRn0amDiY=
   - secure: PmThQwQ+njs4ms3zDIipXMjIxrAf0y1q77F8EieaSVK0YemX+MFLOv9q3QagoRBpmMlBBe/IsTpfXH8RHLTLmpmT+UNuq0Jn46AKetgOisT6xU9I824jn71I1fTajq0RaEe54ELWfLRPrk3waCa71/5l03ASOKnVSd24z+q0TzUX8pwWW7zotVIxKcKy0N/QFfGXi3ekeoJyEV+W8vcRUpqGfB5TLPnF2y8M5FjFSkdH3BtrPDocJBck4pBQxLWKhmw3i5re4N5YkBCp4bsvYwGOmXGMCAB9ZQb4mXaPRsCkp5zd/L44owLYkvoJdO/10U3CIhAWdyMw9irNzXAOdpDYjHz6fZUwZP3QslB0U2o27PwcfMClwUvGalYqkYbuEOi1nqbM10kN1wbI0q7tYYM4+u1dZE8FLR4oTjKut9UcdgI5EdwCmTxxZKeOU8bzIDclTlCWGRV5vFORnO6p1Fp9JQ2mhWRUh4lgSHq/eRgVwm3Bd/pcElSnV4yQtJNfoP3hP7Z7bJdOX6BKTeB+lhCEj/Tv3t/gtzWWuD4QVCVG8/wGUoAAvYKLpzMS8oDfGTyV3oNsqTnm6MVnfycmV1xHrGFBnqU+TMl37nhvdqsHTCYWTYSiqrY2yMaA0+khKfOBGHmqLwktg7kTBrRAYmGTSx8WwvpYMAkv8iTcAj4=
-before_install:
-- |
-  curl -fsSL https://github.com/ckaserer/bash-script-collection/archive/master.zip > bash-script-collection.zip
-  unzip -j bash-script-collection.zip -d bash-script-collection
-  rm bash-script-collection.zip
-script:
-- |
-  set -ex
-  docker build -t ${ORGANIZATION}/${REPO}:${TAG} --no-cache .
-  docker run --rm -it ${ORGANIZATION}/${REPO}:${TAG}
-  set +ex
+before_install: .ci/fetch-bash-script-collection.sh
+script: .ci/test.sh
 deploy:
   provider: script
-  script: bash ./bash-script-collection/docker-push-image.sh
+  script: bash bash-script-collection/docker-push-image.sh \
+            --docker-org  gepardec \
+            --docker-repo hello-world \
+            --docker-user ${DOCKER_USER} \
+            --docker-pass ${DOCKER_PASS}
   skip_cleanup: true
   on:
     branch: master
